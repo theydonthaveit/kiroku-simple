@@ -76,3 +76,62 @@ https://www.slideshare.net/lyonwj/natural-language-processing-with-graph-databas
 `Docker`
 
 ## Further reading:
+
+
+
+Proposed architecture
+Elm Go PSQL TravisCI Python or Scala or Haskell Rust Cassandra or Hadoop
+
+Current tech proposed architecture:
+Frontend with React
+Standalone application
+Servicing it's own build test and deploy pipeline
+Could be dockerized
+Using bable and webpack for configuration
+Redux or similar for statement management and management of JWT
+
+Backend with python
+Standalone application served as a restful API via Flask SQLAlchemy JWT and modules and frameworks
+Modularised
+Models to manage database interactions
+Register and login routes are not managed under before hooks with authentication
+All other routes require a JWT
+
+Some in-memory service to store JWT for user sessions.
+
+Frontend app has an unique api key which allows it to make initial and all requests. This is in addition to the JWT which is created for user sessions.
+
+User APP flow:
+
+User registers
+Supplying required details on form
+If details are fine:
+Detials are sent to the backend
+
+If details are new:
+Backend adds details to the database
+Generate a JWT
+Respond with a JWT
+Else:
+Deny and ask for new details
+
+Front-end receives JWT and can now make further requests to the API
+
+JWT stored on in-memory database servicing both the front and back end
+
+The in-memory database only communicates with programmes serviced on specific ports
+
+Use Case:
+User navigates to a page which requires additional content not served to the front-end by the backend.
+
+Frontend makes a request to the backend with the JWT.
+
+Backend validates the JWT via decoding and checking the users id. Backend also looks up the JWT on the in-memory system to note the state of the user. Logged-in etc.
+
+Backend is happy and retrieves the content required. Depending on the data required the backend might prefetch additional pending data and cache this on a websocket to serve later to the front-end if requested. I.e. we present a list of notes but the actual content of the notes are cached. When the user selects a particular note to view complete details, the backend will serve up the cache content for this note.
+
+When a note is taken we have 2 options.
+Store on the local web db in case connection drops
+And to open up a websocket as soon as the user starts taking notes
+
+Allow for offline recording and post processing
