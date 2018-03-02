@@ -1,137 +1,167 @@
 # kiroku-simple
 simple flask-react app - building blocks for major kiroku repo
+## What I have completed:
 
-## REACT
+Currently the 2 apps are not talking to each other, I never had enough time to do this.
 
-The React element of this project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+`FRONTEND:`
+* Standalone application
+* Built in ReactJS, served on NodeJS
+* Initiated via Facebook’s ‘create-react-app’ tool
+* Webpack for build configuration
+* Babel to trans-compile JSX to JavaScript for deployment
 
-Below you will find some information on how to perform common tasks.<br>
-You can find the most recent version of this guide [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
+`How to RUN?`
+* frontend (root) folder
+* npm (yarn) install – this will install all dependencies from the package.json (lockfile)
+* npm (yarn) start – this will start a server instance
 
-### Available Scripts
+`BACKEND:`
+* Standalone application
+* Designed as a RestFull API service
+* Flask framework
+* JSON Web Tokens for authentication (login and registration)
+* SQLAlchemy framework for ORM
 
-In the project directory, you can run:
+`How to RUN?`
+### I used a virtualenv for python development but this is not required
+* From the src folder run ‘pip install –r requirements.txt’
+* Set the “flask app env” export FLASK_APP=main.py
+* Then type: Flask run – this should start a server instance
 
-### `yarn is a possible substitute for npm`
+`How to RUN database?`
+### Postgres needs to be installed locally, if not try install Postgres APP ( way better than brew )
+* Run: createdb kiroku-simple
+* Run: (from within backend/db) python database_setup.py
 
-### `npm install`
-
-Installs all dependencies
-
-### `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](#running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](#deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+`Possible end point tests:`
+* curl -H 'Content-Type: application/json' -d '{"name":"Jay","email":"jay@kiroku.com","password":"kiroku-safe"}' -X POST http://127.0.0.1:5000/register/tokenize
+* curl -H 'Content-Type: application/json' -d '{"name":"Jay","password":"kiroku-safe"}' -X POST http://127.0.0.1:5000/login/tokenize
+* curl -H 'Content-Type: application/json' -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MTk5OTQ0NjEsImlhdCI6MTUxOTk5NDQ1Niwic3ViIjoyfQ.Yyc35YLbLenVV9ykDBOOD1xJeHOVS4tH-8QCzoW_Ab8' -d '{"business":"dentist","client":"john","note":"has problems","workspace":"layout"}' -X POST http://127.0.0.1:5000/business/1
+* curl -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MTk5OTQ0NjEsImlhdCI6MTUxOTk5NDQ1Niwic3ViIjoyfQ.Yyc35YLbLenVV9ykDBOOD1xJeHOVS4tH-8QCzoW_Ab8' http://127.0.0.1:5000/business/5
 
 
-## FLASK
-
-### Considerations
-
-### Possible frameworks:
-`Quart, Falcon, Hug`
+## To complete and amend on the kiroku simple app:
+* Project structure to [kiroku-main](https://github.com/theydonthaveit/kiroku/tree/develop)
+* For each amendment to a table run a database migration script
+* Create a modal for each new table
+* Split route into separate 'blueprints'
+* React frontend to communicate with the backend
+* JWT stored in a session cache
+* Backend to cache db content which is in additional to the initial request from the frontend but is in relation to the data
+* Etc.
 
 # FUTURE
+## ARCHITECTURE (proposed):
 
-## Possible technologies:
-`Elm`
+`not limited to the following list and loads more to flesh out`
 
-`Go or Elixir or Scala`
+- [ ] Micro-service driven architecture
+  - [ ] Served over HTTPS with SSL certificates
+  - HTTP/2 seems widely accepted and might be something to keep in mind
+- [ ] Front-end application
+  - stand alone application
+  - communicates to the back-end via a restful API
+  - JWT used for authenication
+  - understanding the deployment pipeline
+    - module loading, mixins, etc.
+  - understand what are our requirements
+  - proposed frameworks:
+    - Elm
+    - React
+    - Scala.js
+- [ ] Back-end application
+  - stand alone application
+  - refer to below 'API structure'
+  - web framework
+    - Similar questions to the above for the front-end
+  - proposed languages:
+    - Python
+    - Scala
+    - Go
+    - Elixir
+- [ ] Database service
+  - Traditional RDBMS SQL
+  - Big Data NoSQL DB
+- [ ] Caching service
+  - shared between the back-end and front-end
+  - to store the JWT for state checking on the session
+  - can be used as an alternative to Indexed DB to store session work
+  - Cache data served by the backend for when the frontend really needs it
+    - performance and UX improvements
+    - reducing how often we make requests to the API and the Database
+  - solutions:
+    - Memcache
+    - Redis
+- [ ] Load balancing service
+  - to help with balance the load on our API
+  - solution:
+    - nginx or similar
+- [ ] NLP service (real-time and post-processing offerings)
+  - Secure web-socket connection with frontend for NLP “real-time” processing
+- [ ] Offline service offering
+- [ ] Docker
+  - For development and deployment
+  - deployment:
+    - makes it easier to deploy or ship already packaged and tested applications
+    - spin up a tested application when required depending on load
+- [ ] AWS platform
+- [ ] TravisCI CI/CD platform
+- [ ] Environments:
+  - development
+  - testing
+  - like-live
+  - production
+- [ ] Testing pipeline for CI/CD performance and quality improvements
+  - cache test results
+  - skip testing when no changes
+  - web the code flow to prevent depreciation
+  - requires a lot of fleshing out to understand what I mean
+- [ ] Data pipeline service for NLP
+# Project structure goal:
+##### Git will be used with Github or Gitlab (I really like Gitlab)
+Kiroku main but with the change that Kiroku would be the main git repo with:
+* Frontend
+* Backend
+* nlp
 
-`PostgreSQL`
+each with their own repos.
 
-`NoSQL or Graph`
-https://www.slideshare.net/lyonwj/natural-language-processing-with-graph-databases-and-neo4j
+# Proposed database design with ORM for the transaction data:
 
-`AWS`
+Postgres or similar RDBMS
 
-`Docker`
+Database migration script to manage amendments to the database
+##### (example):
+`tables:`
+* user
+* business
+* client
+* note
+
+each table will be indexed with foreign-key relationships will be used as follows:
+
+* user has a ‘one-to-one’ relationship with business
+* business has a ‘many-to-many’ relationship with client
+* client has a ‘one-to-many’ relationship with note
+
+`benefit:`
+
+When a request is made to the database we can easily prefetch all related content to an user accounts.
+
+With this setup, we can also fetch the data in sub-sections. This setup allows for better reporting.
+
+
+# API structure:
+* Hybrid of RestFul and 'always serviced' API
+* HEASTO type
+* Required JWT and an API_KEY for the front-end to send with each request
+* POST, GET, PUT, DELETE, PATCH supported (proper HTTP request methods)
+
 
 ## Further reading:
-
-
-
-Proposed architecture
-Elm Go PSQL TravisCI Python or Scala or Haskell Rust Cassandra or Hadoop
-
-Current tech proposed architecture:
-Frontend with React
-Standalone application
-Servicing it's own build test and deploy pipeline
-Could be dockerized
-Using bable and webpack for configuration
-Redux or similar for statement management and management of JWT
-
-Backend with python
-Standalone application served as a restful API via Flask SQLAlchemy JWT and modules and frameworks
-Modularised
-Models to manage database interactions
-Register and login routes are not managed under before hooks with authentication
-All other routes require a JWT
-
-Some in-memory service to store JWT for user sessions.
-
-Frontend app has an unique api key which allows it to make initial and all requests. This is in addition to the JWT which is created for user sessions.
-
-User APP flow:
-
-User registers
-Supplying required details on form
-If details are fine:
-Detials are sent to the backend
-
-If details are new:
-Backend adds details to the database
-Generate a JWT
-Respond with a JWT
-Else:
-Deny and ask for new details
-
-Front-end receives JWT and can now make further requests to the API
-
-JWT stored on in-memory database servicing both the front and back end
-
-The in-memory database only communicates with programmes serviced on specific ports
-
-Use Case:
-User navigates to a page which requires additional content not served to the front-end by the backend.
-
-Frontend makes a request to the backend with the JWT.
-
-Backend validates the JWT via decoding and checking the users id. Backend also looks up the JWT on the in-memory system to note the state of the user. Logged-in etc.
-
-Backend is happy and retrieves the content required. Depending on the data required the backend might prefetch additional pending data and cache this on a websocket to serve later to the front-end if requested. I.e. we present a list of notes but the actual content of the notes are cached. When the user selects a particular note to view complete details, the backend will serve up the cache content for this note.
-
-When a note is taken we have 2 options.
-Store on the local web db in case connection drops
-And to open up a websocket as soon as the user starts taking notes
-
-Allow for offline recording and post processing
+* podcast [Scala at Duolingo with Andre Kenji Horie](https://softwareengineeringdaily.com/2017/12/14/scala-at-duolingo-with-andre-kenji-horie/)
+* architecture [Rewriting Duolingo's engine in Scala](http://making.duolingo.com/rewriting-duolingos-engine-in-scala)
+* podcast [evaluate web framework](https://devchat.tv/js-jabber/jsj-302-evaluating-web-frameworks-kitson-kelly)
+* article [event-driven api](https://nordicapis.com/5-protocols-for-event-driven-api-architectures/)
+* links [numerous](https://github.com/theydonthaveit/kiroku/tree/develop)
