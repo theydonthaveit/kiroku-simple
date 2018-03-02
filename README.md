@@ -51,6 +51,32 @@ Currently the 2 apps are not talking to each other, I never had enough time to d
 * Backend to cache db content which is in additional to the initial request from the frontend but is in relation to the data
 * Etc.
 
+# PRPOSED FLOW:
+## VERY VERY BASIC
+`login process`
+* front-end checks for session
+  * if no session: we create on
+  * else: use session and redirect to home with loaded content
+* front-end makes a requests with the login credentials
+* front-end performs basic checks - i.e. password correctly formatted
+* back-end looks for JWT
+* if non provided: generate JWT and send back to client
+* front-end receives a JWT
+* session store JWT
+* client makes:
+  * same request with JWT
+* back-end knows of this JWT via the session store and accepts requests
+* back-end looks for the user
+* back-end decrypts password and verifies it
+* if happy:
+  * prefetch all content required for the user's main page
+  * i.e. notes, clients, etc.
+  * cache the actual content of the notes
+  * only provide what is required
+  * open a web-socket if need be
+* else:
+  * send a 404 and request the front-end to retry
+
 # FUTURE
 ## ARCHITECTURE (proposed):
 
@@ -105,7 +131,7 @@ Currently the 2 apps are not talking to each other, I never had enough time to d
   - deployment:
     - makes it easier to deploy or ship already packaged and tested applications
     - spin up a tested application when required depending on load
-- [ ] AWS platform
+- [ ] AWS platform or AZURE or ZIET
 - [ ] TravisCI CI/CD platform
 - [ ] Environments:
   - development
