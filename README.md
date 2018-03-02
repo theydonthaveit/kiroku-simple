@@ -37,8 +37,8 @@ Currently the 2 apps are not talking to each other, I never had enough time to d
 `Possible end point tests:`
 * curl -H 'Content-Type: application/json' -d '{"name":"Jay","email":"jay@kiroku.com","password":"kiroku-safe"}' -X POST http://127.0.0.1:5000/register/tokenize
 * curl -H 'Content-Type: application/json' -d '{"name":"Jay","password":"kiroku-safe"}' -X POST http://127.0.0.1:5000/login/tokenize
-* curl -H 'Content-Type: application/json' -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MTk5OTQ0NjEsImlhdCI6MTUxOTk5NDQ1Niwic3ViIjoyfQ.Yyc35YLbLenVV9ykDBOOD1xJeHOVS4tH-8QCzoW_Ab8' -d '{"business":"dentist","client":"john","note":"has problems","workspace":"layout"}' -X POST http://127.0.0.1:5000/business/1
-* curl -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MTk5OTQ0NjEsImlhdCI6MTUxOTk5NDQ1Niwic3ViIjoyfQ.Yyc35YLbLenVV9ykDBOOD1xJeHOVS4tH-8QCzoW_Ab8' http://127.0.0.1:5000/business/5
+* curl -H 'Content-Type: application/json' -H 'Authorization: Bearer ENTER YOUR JWT RECEIEVD FROM ABOVE' -d '{"business":"dentist","client":"john","note":"has problems","workspace":"layout"}' -X POST http://127.0.0.1:5000/business/1
+* curl -H 'Authorization: Bearer ENTER YOUR JWT RECEIEVD FROM ABOVE' http://127.0.0.1:5000/business/5
 
 
 ## To complete and amend on the kiroku simple app:
